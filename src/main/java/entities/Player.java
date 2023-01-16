@@ -3,6 +3,8 @@ package entities;
 import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "player")
@@ -26,6 +28,12 @@ public class Player {
 
     @Column(name = "status")
     private Byte status;
+
+    @ManyToMany
+    @JoinTable(name = "player_has_match",
+            joinColumns = @JoinColumn(name = "player_id"),
+            inverseJoinColumns = @JoinColumn(name = "match_id"))
+    private Set<Match> matches = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -65,6 +73,14 @@ public class Player {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public Set<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(Set<Match> matches) {
+        this.matches = matches;
     }
 
 }

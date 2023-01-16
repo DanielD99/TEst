@@ -2,20 +2,18 @@ package entities;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "`match`")
+@Table(name = "match")
 public class Match {
-    @EmbeddedId
-    private MatchId id;
-
-    @MapsId("locationId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "location_id", nullable = false)
-    private Location location;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
     @Size(max = 45)
     @Column(name = "opponentTeam", length = 45)
@@ -32,26 +30,23 @@ public class Match {
     @Column(name = "inDoors")
     private Byte inDoors;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "location_id", nullable = false)
+    private Location location;
+
     @ManyToMany
     @JoinTable(name = "player_has_match",
             joinColumns = @JoinColumn(name = "match_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
     private Set<Player> players = new LinkedHashSet<>();
 
-    public MatchId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(MatchId id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public String getOpponentTeam() {
@@ -84,6 +79,14 @@ public class Match {
 
     public void setInDoors(Byte inDoors) {
         this.inDoors = inDoors;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Set<Player> getPlayers() {

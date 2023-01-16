@@ -23,7 +23,7 @@ public class Location {
     private String city;
 
     @Size(max = 45)
-    @Column(name = "`condition`", length = 45)
+    @Column(name = "condition", length = 45)
     private String condition;
 
     @OneToMany(mappedBy = "location")
