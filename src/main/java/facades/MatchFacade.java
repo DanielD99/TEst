@@ -2,6 +2,7 @@ package facades;
 
 import dtos.MatchDTO;
 import entities.Matches;
+import entities.Player;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -45,5 +46,48 @@ public class MatchFacade {
         em.close();
     }
 
+    }
+
+
+
+    public Matches addPlayerToMatch(Player player, Matches matches){
+        EntityManager em = getEntityManager();
+
+        try{
+            em.getTransaction().begin();
+
+            if(!em.contains(matches)){
+            em.merge(matches);
+
+            }
+            matches.getPlayers().add(player);
+            em.merge(matches);
+            em.getTransaction().commit();
+
+        }finally
+        {
+            em.close();
+        }
+        return matches;
+
+    }
+
+    public Matches getMatchById(int id) {
+
+        EntityManager em = getEntityManager();
+        Matches matches;
+
+        try{
+            em.getTransaction().begin();
+            matches = em.find(Matches.class,id);
+            em.getTransaction().commit();
+
+
+        }finally
+        {
+        em.close();
+        }
+
+        return  matches;
     }
 }
