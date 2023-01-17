@@ -1,14 +1,17 @@
 package dtos;
 
-import entities.Match;
+import entities.Location;
+import entities.Matches;
+import entities.Player;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A DTO for the {@link entities.Match} entity
+ * A DTO for the {@link Matches} entity
  */
 public class MatchDTO implements Serializable {
     private final Integer id;
@@ -21,25 +24,37 @@ public class MatchDTO implements Serializable {
     private final Byte inDoors;
     @NotNull
     private final LocationInnerDTO location;
-    private final Set<PlayerInnerDTO> players;
+    private final List<PlayerInnerDTO> players = new ArrayList<>();
 
-    public MatchDTO(Integer id, String opponentTeam, String judge, String type, Byte inDoors, LocationInnerDTO location, Set<PlayerInnerDTO> players) {
+    public MatchDTO(Integer id, String opponentTeam, String judge, String type, Byte inDoors, LocationInnerDTO location) {
         this.id = id;
         this.opponentTeam = opponentTeam;
         this.judge = judge;
         this.type = type;
         this.inDoors = inDoors;
         this.location = location;
-        this.players = players;
+
     }
 
-    public MatchDTO(Match match) {
+    public MatchDTO(Matches match) {
         this.id = match.getId();
         this.opponentTeam = match.getOpponentTeam();
         this.judge = match.getJudge();
         this.type = match.getType();
         this.inDoors = match.getInDoors();
+        this.location = new LocationInnerDTO((match.getLocation()));
+        match.getPlayers().forEach(player -> {
+            players.add(new PlayerInnerDTO(player));
+        });
+    }
 
+    public static List<MatchDTO> getDTOs(List<Matches> matches) {
+
+        List<MatchDTO> MatchDTOList = new ArrayList<>();
+        matches.forEach(match -> {
+            MatchDTOList.add(new MatchDTO(match));
+        });
+        return MatchDTOList;
     }
 
     public Integer getId() {
@@ -66,7 +81,7 @@ public class MatchDTO implements Serializable {
         return location;
     }
 
-    public Set<PlayerInnerDTO> getPlayers() {
+    public List<PlayerInnerDTO> getPlayers() {
         return players;
     }
 
@@ -87,19 +102,25 @@ public class MatchDTO implements Serializable {
      */
     public static class LocationInnerDTO implements Serializable {
         private final Integer id;
-        @Size(max = 45)
         private final String address;
-        @Size(max = 45)
         private final String city;
-        @Size(max = 45)
-        private final String condition;
+        private final String weather;
 
-        public LocationInnerDTO(Integer id, String address, String city, String condition) {
+        public LocationInnerDTO(Integer id, String address, String city, String weather) {
             this.id = id;
             this.address = address;
             this.city = city;
-            this.condition = condition;
+            this.weather = weather;
         }
+
+        public LocationInnerDTO(Location location){
+
+            this.id = location.getId();
+            this.address = location.getAddress();
+            this.city = location.getCity();
+            this.weather = location.getWeather();
+        }
+
 
         public Integer getId() {
             return id;
@@ -113,8 +134,8 @@ public class MatchDTO implements Serializable {
             return city;
         }
 
-        public String getCondition() {
-            return condition;
+        public String getWeather() {
+            return weather;
         }
 
         @Override
@@ -123,7 +144,7 @@ public class MatchDTO implements Serializable {
                     "id = " + id + ", " +
                     "address = " + address + ", " +
                     "city = " + city + ", " +
-                    "condition = " + condition + ")";
+                    "weather = " + weather + ")";
         }
     }
 
@@ -132,20 +153,26 @@ public class MatchDTO implements Serializable {
      */
     public static class PlayerInnerDTO implements Serializable {
         private final Integer id;
-        @Size(max = 45)
         private final String name;
-        @Size(max = 45)
         private final String phone;
-        @Size(max = 45)
         private final String email;
-        private final Byte status;
+        private final String status;
 
-        public PlayerInnerDTO(Integer id, String name, String phone, String email, Byte status) {
+        public PlayerInnerDTO(Integer id, String name, String phone, String email, String status) {
             this.id = id;
             this.name = name;
             this.phone = phone;
             this.email = email;
             this.status = status;
+        }
+
+        public PlayerInnerDTO(Player player){
+            this.id = player.getId();
+            this.name = player.getName();
+            this.phone = player.getPhone();
+            this.email = player.getEmail();
+            this.status = player.getStatus();
+
         }
 
         public Integer getId() {
@@ -164,7 +191,7 @@ public class MatchDTO implements Serializable {
             return email;
         }
 
-        public Byte getStatus() {
+        public String getStatus() {
             return status;
         }
 

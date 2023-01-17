@@ -23,11 +23,11 @@ public class Location {
     private String city;
 
     @Size(max = 45)
-    @Column(name = "condition", length = 45)
-    private String condition;
+    @Column(name = "weather", length = 45)
+    private String weather;
 
     @OneToMany(mappedBy = "location")
-    private Set<Match> matches = new LinkedHashSet<>();
+    private Set<Matches> matches = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -53,19 +53,19 @@ public class Location {
         this.city = city;
     }
 
-    public String getCondition() {
-        return condition;
+    public String getWeather() {
+        return weather;
     }
 
-    public void setCondition(String condition) {
-        this.condition = condition;
+    public void setWeather(String weather) {
+        this.weather = weather;
     }
 
-    public Set<Match> getMatches() {
+    public Set<Matches> getMatches() {
         return matches;
     }
 
-    public void setMatches(Set<Match> matches) {
+    public void setMatches(Set<Matches> matches) {
         this.matches = matches;
     }
 

@@ -29,7 +29,7 @@ public class Populator {
             Role userRole = persistRole("user",emf);
             Role adminRole = persistRole("admin",emf);
 
-            //Change password to something secret in your own project!!!!!!!
+
             User user = new User("user", "test123", 33);
             User admin = new User("admin", "test123", 44);
 
@@ -39,7 +39,6 @@ public class Populator {
             userFacade.createUser(user);
             userFacade.createUser(admin);
         } catch (Exception e) {
-            //
         }
     }
 
@@ -81,4 +80,8 @@ public class Populator {
 
         return role;
     }
+
+
+
+
 }

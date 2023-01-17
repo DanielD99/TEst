@@ -30,7 +30,7 @@ public class Utility {
     }
     
     public static void main(String[] args) throws UnsupportedEncodingException {
-        String str2 = "{'id':1, 'username':'owais', 'password':'1234', 'age':26}";
+        String str2 = "{'id':1, 'username':'user', 'password':'1234', 'age':26}";
         UserDTO userDTO = json2DTO(str2);
         System.out.println(userDTO);
         

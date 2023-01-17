@@ -8,8 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "match")
-public class Match {
+@Table(name = "matches")
+public class Matches {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -37,7 +37,7 @@ public class Match {
 
     @ManyToMany
     @JoinTable(name = "player_has_match",
-            joinColumns = @JoinColumn(name = "match_id"),
+            joinColumns = @JoinColumn(name = "matches_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
     private Set<Player> players = new LinkedHashSet<>();
 

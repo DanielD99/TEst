@@ -26,14 +26,15 @@ public class Player {
     @Column(name = "email", length = 45)
     private String email;
 
-    @Column(name = "status")
-    private Byte status;
+    @Size(max = 45)
+    @Column(name = "status", length = 45)
+    private String status;
 
     @ManyToMany
     @JoinTable(name = "player_has_match",
             joinColumns = @JoinColumn(name = "player_id"),
             inverseJoinColumns = @JoinColumn(name = "match_id"))
-    private Set<Match> matches = new LinkedHashSet<>();
+    private Set<Matches> matches = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -67,19 +68,19 @@ public class Player {
         this.email = email;
     }
 
-    public Byte getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Set<Match> getMatches() {
+    public Set<Matches> getMatches() {
         return matches;
     }
 
-    public void setMatches(Set<Match> matches) {
+    public void setMatches(Set<Matches> matches) {
         this.matches = matches;
     }
 
