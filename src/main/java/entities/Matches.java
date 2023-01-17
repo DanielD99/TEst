@@ -37,7 +37,7 @@ public class Matches {
 
     @ManyToMany
     @JoinTable(name = "player_has_match",
-            joinColumns = @JoinColumn(name = "matches_id"),
+            joinColumns = @JoinColumn(name = "match_id"),
             inverseJoinColumns = @JoinColumn(name = "player_id"))
     private Set<Player> players = new LinkedHashSet<>();
 
