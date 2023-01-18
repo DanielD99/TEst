@@ -6,6 +6,7 @@ import entities.Player;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class MatchFacade {
     public Matches addPlayerToMatch(Player player, Matches matches){
         EntityManager em = getEntityManager();
 
+
         try{
             em.getTransaction().begin();
 
@@ -70,6 +72,27 @@ public class MatchFacade {
         }
         return matches;
 
+    }
+
+
+
+    public void removePlayer(Player player) {
+        EntityManager em = emf.createEntityManager();
+        if(player.getId() == null) {
+            throw new EntityNotFoundException("Selected player does not exist, with player id: "+ player.getId());
+        }
+
+        try {
+            em.getTransaction().begin();
+            if(!em.contains(player)){
+                player = em.merge(player);
+            }
+            em.remove(player);
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
     }
 
     public Matches getMatchById(int id) {

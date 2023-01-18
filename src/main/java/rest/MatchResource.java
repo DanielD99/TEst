@@ -5,11 +5,13 @@ import com.google.gson.GsonBuilder;
 import dtos.MatchDTO;
 import entities.Matches;
 import entities.Player;
+import entities.User;
 import facades.MatchFacade;
 import facades.PlayerFacade;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import utils.EMF_Creator;
 
+import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -43,4 +45,20 @@ public class MatchResource {
         MatchDTO matchDTO = new MatchDTO(matchUpdated);
         return Response.status(HttpStatus.OK_200.getStatusCode()).entity(GSON.toJson(matchDTO)).build();
     }
+
+
+    @DELETE
+    @Path("{id}/player/{playerId}")
+    @RolesAllowed("admin")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response deletePlayerFromMatch(@PathParam("id")int id,@PathParam("playerId")int playerId) {
+        Player player = playerFacade.getPlayerById(playerId);
+        Matches matches = facade.getMatchById(id);
+
+        facade.removePlayer(player);
+
+        return Response.ok().build();
+    }
+
+
 }
